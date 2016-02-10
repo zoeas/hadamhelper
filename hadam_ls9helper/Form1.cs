@@ -129,7 +129,7 @@ namespace hadam_ls9helper
 
         private void FindChSetHnd()
         {
-            IntPtr handle = FindWindow(null, "LS9");  // 최상위 핸들 찾고
+            IntPtr handle = FindWindow(null, "LS9 2");  // 최상위 핸들 찾고
 
             if (handle != null)
             {
@@ -155,21 +155,21 @@ namespace hadam_ls9helper
             EnumChildWindows(_ch32, GetChOnOffHandler, IntPtr.Zero);
             _chSong = _chOnOff;
 
-            IntPtr ch21 = ChSelector(9, _ch32);
+            IntPtr ch21 = ChSelector(11, _ch32);
             EnumChildWindows(ch21, GetChOnOffHandler, IntPtr.Zero);
-            _chWMic1 = _chOnOff;
+            _chWMic4 = _chOnOff;
 
             IntPtr ch20 = ChSelector(1, ch21);
             EnumChildWindows(ch20, GetChOnOffHandler, IntPtr.Zero);
-            _chWMic2 = _chOnOff;
+            _chWMic3 = _chOnOff;
 
             IntPtr ch19 = ChSelector(1, ch20);
             EnumChildWindows(ch19, GetChOnOffHandler, IntPtr.Zero);
-            _chWMic3 = _chOnOff;
+            _chWMic2 = _chOnOff;
 
             IntPtr ch18 = ChSelector(1, ch19);
             EnumChildWindows(ch18, GetChOnOffHandler, IntPtr.Zero);
-            _chWMic4 = _chOnOff;
+            _chWMic1 = _chOnOff;
 
             // 16, 8
             EnumChildWindows(_ch16, GetChOnOffHandler, IntPtr.Zero);

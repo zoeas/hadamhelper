@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btn_pMic = new System.Windows.Forms.Button();
             this.btn_cMic = new System.Windows.Forms.Button();
             this.btn_downMain = new System.Windows.Forms.Button();
@@ -213,6 +214,7 @@
             this.ClientSize = new System.Drawing.Size(294, 367);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);

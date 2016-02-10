@@ -9,11 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 
 namespace hadam_ls9helper
 {
     public partial class Form1 : Form
     {
+        private const int SONG = 1;
+        private const int PIANO = 2;
+        private const int WMIC = 3;
+
+
         [DllImport("user32.dll")]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowNmae);
 
@@ -37,10 +43,22 @@ namespace hadam_ls9helper
         private const int GW_CHILD = 5;     // 첫번째 자식
 
         [DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        private static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
         const int WM_LBUTTONDOWN = 0x0201;
         const int WM_LBUTTONUP = 0x0202;
         const int BM_CLICK = 0x00F5;
+        const int GCL_HICONSM = -34;
+        const int GCL_HICON = -14;
+        const int ICON_SMALL = 0;
+        const int ICON_BIG = 1;
+        const int ICON_SMALL2 = 2;
+        const int WM_GETICON = 0x7F;
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLong")]
+        public static extern uint GetClassLongPtr32(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLongPtr")]
+        public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
 
         private delegate bool EnumWindowProc(IntPtr childHandle, IntPtr pointer);
         private IntPtr _ch32;
@@ -173,28 +191,122 @@ namespace hadam_ls9helper
             return wHnd;
         }
 
+        public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
+        {
+            if (IntPtr.Size > 4)
+                return GetClassLongPtr64(hWnd, nIndex);
+            else
+                return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
+        }
+
+        private Icon GetAppIcon(IntPtr hwnd)
+        {
+            IntPtr iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL2, 0);
+            if (iconHandle == IntPtr.Zero)
+                iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL, 0);
+            if (iconHandle == IntPtr.Zero)
+                iconHandle = SendMessage(hwnd, WM_GETICON, ICON_BIG, 0);
+            if (iconHandle == IntPtr.Zero)
+                iconHandle = GetClassLongPtr(hwnd, GCL_HICON);
+            if (iconHandle == IntPtr.Zero)
+                iconHandle = GetClassLongPtr(hwnd, GCL_HICONSM);
+
+            if (iconHandle == IntPtr.Zero)
+                return null;
+
+            Icon icn = Icon.FromHandle(iconHandle);
+
+            return icn;
+        }
+
+        /// <summary>
+        /// 아랫강대상외 연결가능
+        /// </summary>
+        /// <param name="mic">누른 버튼의 종류(중복실행방지)</param>
+        private void Connection(int mic)
+        {
+            if (cBox_pMic.Checked && mic!= PIANO)
+            {
+                SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
+            }
+            if (cBox_cMic.Checked && mic != SONG)
+            {
+                SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
+            }
+            if (cBox_wMics.Checked && mic != WMIC)
+            {
+                if (cBox_wMic1.Checked)
+                {
+                    SendMessage(_chWMic1, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chWMic1, WM_LBUTTONUP, 0, 0);
+                }
+                if (cBox_wMic2.Checked)
+                {
+                    SendMessage(_chWMic2, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chWMic2, WM_LBUTTONUP, 0, 0);
+                }
+                if (cBox_wMic3.Checked)
+                {
+                    SendMessage(_chWMic3, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chWMic3, WM_LBUTTONUP, 0, 0);
+                }
+                if (cBox_wMic4.Checked)
+                {
+                    SendMessage(_chWMic4, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
+                }
+            }
+        }
+
+        // 아랫강대상
         private void btn_downMain_Click(object sender, EventArgs e)
         {
             SendMessage(_chDownMain, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chDownMain, WM_LBUTTONUP, 0, 0);
         }
 
+        // 피아노
         private void btn_pMic_Click(object sender, EventArgs e)
         {
             SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
+            Connection(PIANO);
         }
 
+        // 무선
         private void btn_wMic_Click(object sender, EventArgs e)
         {
-            SendMessage(_chWMic1, WM_LBUTTONDOWN, 0, 0);
-            SendMessage(_chWMic1, WM_LBUTTONUP, 0, 0);
+            if (cBox_wMic1.Checked)
+            {
+                SendMessage(_chWMic1, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chWMic1, WM_LBUTTONUP, 0, 0);
+            }
+            if (cBox_wMic2.Checked)
+            {
+                SendMessage(_chWMic2, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chWMic2, WM_LBUTTONUP, 0, 0);
+            }
+            if (cBox_wMic3.Checked)
+            {
+                SendMessage(_chWMic3, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chWMic3, WM_LBUTTONUP, 0, 0);
+            }
+            if (cBox_wMic4.Checked)
+            {
+                SendMessage(_chWMic4, WM_LBUTTONDOWN, 0, 0);
+                SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
+            }
+            Connection(WMIC);
         }
 
+        // 찬양대
         private void btn_cMic_Click(object sender, EventArgs e)
         {
             SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
+            Connection(SONG);
         }
     }
 }

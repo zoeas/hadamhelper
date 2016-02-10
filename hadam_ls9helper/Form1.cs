@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace hadam_ls9helper
 {
@@ -22,6 +23,9 @@ namespace hadam_ls9helper
 
         [DllImport("user32.dll")]
         private static extern int GetWindowText(IntPtr hWind, StringBuilder className, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetParent(IntPtr hWind);
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindow(IntPtr hWnd, int uCmd);
@@ -39,7 +43,8 @@ namespace hadam_ls9helper
         const int BM_CLICK = 0x00F5;
 
         private delegate bool EnumWindowProc(IntPtr childHandle, IntPtr pointer);
-        private List<IntPtr> _chSetHndList = new List<IntPtr>();
+        private IntPtr _ch32;
+        private IntPtr _ch16;
         private IntPtr _chOnOff;
         private IntPtr _chSong;
         private IntPtr _chWMic1;
@@ -53,12 +58,11 @@ namespace hadam_ls9helper
         /// <summary>
         /// 최상위 부모 프로세스와 자식 프로세스중 필요한 부분 일부는
         /// 이름이 특정되어있고 이후 필요한 자식프로세스들은 이름과 클래스가 전부 중복되어있다
-        /// 그러므로 일단 부모 프로세스를 잡고
-        /// 그 아래를 EnumChildWindows를 검색하여 잡는다 (두개)
-        /// 각각 32-17, 16-1 번까지의 번호를 가지고 있다
-        /// 이들은 전부 클래스와 캡션이 중복되므로 순서에 의해서 찾아야된다
-        /// 즉 1번을 찾을려면 두번째 것의 가장 마지막 16번째 자식이 해당된다
-        /// 그리고 거기서 이제 캡션으로 (onOfOn)을 찾으면 된다
+        /// 그러므로 일단 부모 프로세스를 잡고 그 아래를 EnumChildWindows를 검색하여 잡는다 (두개)
+        /// 이들은 각각 32-17, 16-1 번까지의 자식윈도우를 또 가지고 있는데
+        /// 전부 클래스와 캡션이 중복되므로 순서에 의해서 찾아야된다
+        /// 그러므로 각각의 부모윈도우에서 가장 첫번째에 있는 자식인 ch32와 ch16을 찾아저장하고
+        /// 나머지 번호는 그걸 기준으로 순서로 찾으면된다
         /// </summary>
         /// <param name="childHandle"></param>
         /// <param name="pointer"></param>
@@ -69,12 +73,23 @@ namespace hadam_ls9helper
             GetWindowText(childHandle, sb, sb.Capacity);
             if(sb.ToString().Equals("qt_viewport"))
             {
-                _chSetHndList.Add(GetWindow(childHandle, GW_CHILD));     // 자식의 자식이 채널세트, 32, 16에 대한 핸들을 저장
+                IntPtr p = GetParent(childHandle);
+                GetWindowText(p, sb, sb.Capacity);
+                if(sb.ToString().Equals("CH 1-16"))
+                {
+                    childHandle = GetWindow(childHandle, GW_CHILD);
+                    _ch16 = GetWindow(childHandle, GW_CHILD);
+                } else if(sb.ToString().Equals("CH17-32"))
+                {
+                    childHandle = GetWindow(childHandle, GW_CHILD);
+                    _ch32 = GetWindow(childHandle, GW_CHILD);
+                }
             }
             return true;
         }
 
-        // 최종적으로 enumchild 한번 더 돌려야된다
+        // 원하는 번호의 채널을 찾았으면 이제 그 채널의 자식윈도우 중에
+        // on off 를 담당하는 윈도우를 찾아야한다
         private bool GetChOnOffHandler(IntPtr onOff, IntPtr param)
         {
             StringBuilder sb = new StringBuilder();
@@ -82,7 +97,7 @@ namespace hadam_ls9helper
             if(sb.ToString().Equals("onofOn"))
             {
                 _chOnOff = onOff;
-                return false;           // 정확히 찾아낸후 멈춘다
+                return false;           // 찾으면 더 이상 검색할 필요없이 바로 멈춘다
             }
             return true;
         }
@@ -96,8 +111,9 @@ namespace hadam_ls9helper
 
         private void FindChSetHnd()
         {
-            IntPtr handle = FindWindow(null, "LS9 2");  // 최상위 핸들 찾고
-            if(handle != null)
+            IntPtr handle = FindWindow(null, "LS9");  // 최상위 핸들 찾고
+
+            if (handle != null)
             {
                 EnumChildWindows(handle, GetChildHandler, IntPtr.Zero); // 자식들 검색해서 채널세트 32,16을 찾아낸다
             }
@@ -117,15 +133,11 @@ namespace hadam_ls9helper
         /// </summary>
         private void FindChHnd()
         {
-            // 각채널세트의 첫번째 채널들
-            IntPtr ch32 = GetWindow(_chSetHndList[0], GW_CHILD);
-            IntPtr ch16 = GetWindow(_chSetHndList[1], GW_CHILD);
-
             //32, 21, 20, 19, 18
-            EnumChildWindows(ch32, GetChOnOffHandler, IntPtr.Zero);
+            EnumChildWindows(_ch32, GetChOnOffHandler, IntPtr.Zero);
             _chSong = _chOnOff;
 
-            IntPtr ch21 = ChSelector(9, ch32);
+            IntPtr ch21 = ChSelector(9, _ch32);
             EnumChildWindows(ch21, GetChOnOffHandler, IntPtr.Zero);
             _chWMic1 = _chOnOff;
 
@@ -142,10 +154,10 @@ namespace hadam_ls9helper
             _chWMic4 = _chOnOff;
 
             // 16, 8
-            EnumChildWindows(ch16, GetChOnOffHandler, IntPtr.Zero);
+            EnumChildWindows(_ch16, GetChOnOffHandler, IntPtr.Zero);
             _chPiano = _chOnOff;
 
-            IntPtr ch8 = ChSelector(8, ch16);
+            IntPtr ch8 = ChSelector(8, _ch16);
             EnumChildWindows(ch8, GetChOnOffHandler, IntPtr.Zero);
             _chDownMain = _chOnOff;
 
@@ -169,7 +181,6 @@ namespace hadam_ls9helper
 
         private void btn_pMic_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(_chPiano.ToString());
             SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
         }

@@ -52,46 +52,57 @@
             // 
             // btn_pMic
             // 
+            this.btn_pMic.Image = global::hadam_ls9helper.Properties.Resources.music_off;
             this.btn_pMic.Location = new System.Drawing.Point(161, 17);
             this.btn_pMic.Name = "btn_pMic";
             this.btn_pMic.Size = new System.Drawing.Size(106, 86);
             this.btn_pMic.TabIndex = 0;
-            this.btn_pMic.Text = "관현악";
+            this.btn_pMic.Text = "관현악\r\n\r\n";
             this.btn_pMic.UseVisualStyleBackColor = true;
             this.btn_pMic.Click += new System.EventHandler(this.btn_pMic_Click);
             // 
             // btn_cMic
             // 
+            this.btn_cMic.Image = global::hadam_ls9helper.Properties.Resources.music_off;
             this.btn_cMic.Location = new System.Drawing.Point(161, 119);
             this.btn_cMic.Name = "btn_cMic";
             this.btn_cMic.Size = new System.Drawing.Size(106, 86);
             this.btn_cMic.TabIndex = 1;
-            this.btn_cMic.Text = "찬양대";
+            this.btn_cMic.Text = "찬양대\r\n\r\n";
             this.btn_cMic.UseVisualStyleBackColor = true;
             this.btn_cMic.Click += new System.EventHandler(this.btn_cMic_Click);
             // 
             // btn_downMain
             // 
+            this.btn_downMain.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_downMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btn_downMain.FlatAppearance.BorderColor = System.Drawing.Color.Blue;
+            this.btn_downMain.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.btn_downMain.Image = global::hadam_ls9helper.Properties.Resources.music_off;
             this.btn_downMain.Location = new System.Drawing.Point(25, 17);
+            this.btn_downMain.Margin = new System.Windows.Forms.Padding(0);
             this.btn_downMain.Name = "btn_downMain";
             this.btn_downMain.Size = new System.Drawing.Size(106, 86);
             this.btn_downMain.TabIndex = 3;
-            this.btn_downMain.Text = "아랫강대상";
+            this.btn_downMain.Text = "아랫강대상\r\n\r\n";
+            this.btn_downMain.UseMnemonic = false;
             this.btn_downMain.UseVisualStyleBackColor = true;
             this.btn_downMain.Click += new System.EventHandler(this.btn_downMain_Click);
             // 
             // btn_wMic
             // 
+            this.btn_wMic.Image = global::hadam_ls9helper.Properties.Resources.music_off;
             this.btn_wMic.Location = new System.Drawing.Point(25, 119);
             this.btn_wMic.Name = "btn_wMic";
             this.btn_wMic.Size = new System.Drawing.Size(106, 86);
             this.btn_wMic.TabIndex = 4;
-            this.btn_wMic.Text = "무선 마이크";
+            this.btn_wMic.Text = "무선 마이크\r\n\r\n";
             this.btn_wMic.UseVisualStyleBackColor = true;
             this.btn_wMic.Click += new System.EventHandler(this.btn_wMic_Click);
             // 
             // panel1
             // 
+            this.panel1.BackColor = System.Drawing.Color.Lavender;
             this.panel1.Controls.Add(this.btn_wMic);
             this.panel1.Controls.Add(this.btn_pMic);
             this.panel1.Controls.Add(this.btn_downMain);

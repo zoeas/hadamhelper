@@ -68,6 +68,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -84,6 +85,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Chrisbanks2-Cold-Fusion-Hd-Piano.ico" />
+    <None Include="Resources\ON.gif" />
+    <None Include="Resources\%25EB%258B%25A4%25ED%258A%25B8.gif" />
+    <None Include="Resources\music.gif" />
+    <None Include="Resources\Image1.gif" />
+    <None Include="Resources\music_s.gif" />
+    <None Include="Resources\music_ss.gif" />
+    <None Include="Resources\mm.gif" />
+    <None Include="Resources\Comp 2_00000.png" />
     <Content Include="Treetog-Junior-Document-audio.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

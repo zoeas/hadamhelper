@@ -18,7 +18,25 @@ namespace hadam_ls9helper
         private const int SONG = 1;
         private const int PIANO = 2;
         private const int WMIC = 3;
+        private const string AURORA_CH = "aurora4stardb";
+        private const string AURORA_HOME = "aurora4staredit";
 
+        private enum ShowWindowEnum { Hide = 0, ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3, Maximize = 3, ShowNormalNoActivate = 4, Show = 5, Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8, Restore = 9, ShowDefault = 10, ForceMinimized = 11 };
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool ShowWindow(IntPtr hWnd, ShowWindowEnum flags);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool PrintWindow(IntPtr hWnd, IntPtr hDC, uint nFlags);
 
         [DllImport("user32.dll")]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowNmae);
@@ -61,6 +79,7 @@ namespace hadam_ls9helper
         public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
 
         private delegate bool EnumWindowProc(IntPtr childHandle, IntPtr pointer);
+        private IntPtr _mainHandle;
         private IntPtr _ch32;
         private IntPtr _ch16;
         private IntPtr _chOnOff;
@@ -125,15 +144,16 @@ namespace hadam_ls9helper
             InitializeComponent();
             FindChSetHnd();
             FindChHnd();
+            InitButton();
         }
 
         private void FindChSetHnd()
         {
-            IntPtr handle = FindWindow(null, "LS9 2");  // 최상위 핸들 찾고
+            _mainHandle = FindWindow(null, "LS9 2");  // 최상위 핸들 찾고
 
-            if (handle != null)
+            if (_mainHandle != null)
             {
-                EnumChildWindows(handle, GetChildHandler, IntPtr.Zero); // 자식들 검색해서 채널세트 32,16을 찾아낸다
+                EnumChildWindows(_mainHandle, GetChildHandler, IntPtr.Zero); // 자식들 검색해서 채널세트 32,16을 찾아낸다
             }
         }
 
@@ -191,32 +211,82 @@ namespace hadam_ls9helper
             return wHnd;
         }
 
-        public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
+        /* 특정윈도우 부분의 그림을 가져온답시고 아이콘 핸들을 고려했지만 이건 말그대로 그 프로그램 자체의 아이콘을 가져온다
+                public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
+                {
+                    if (IntPtr.Size > 4)
+                        return GetClassLongPtr64(hWnd, nIndex);
+                    else
+                        return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
+                }
+
+                private Icon GetAppIcon(IntPtr hwnd)
+                {
+                    IntPtr iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL2, 0);
+                    if (iconHandle == IntPtr.Zero)
+                        iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL, 0);
+                    if (iconHandle == IntPtr.Zero)
+                        iconHandle = SendMessage(hwnd, WM_GETICON, ICON_BIG, 0);
+                    if (iconHandle == IntPtr.Zero)
+                        iconHandle = GetClassLongPtr(hwnd, GCL_HICON);
+                    if (iconHandle == IntPtr.Zero)
+                        iconHandle = GetClassLongPtr(hwnd, GCL_HICONSM);
+
+                    if (iconHandle == IntPtr.Zero)
+                        return null;
+
+                    Icon icn = Icon.FromHandle(iconHandle);
+
+                    return icn;
+                }
+        */
+
+        private void InitButton()
         {
-            if (IntPtr.Size > 4)
-                return GetClassLongPtr64(hWnd, nIndex);
-            else
-                return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
+            btn_downMain.Image = CheckON(_chDownMain);
+            btn_cMic.Image = CheckON(_chSong);
+            btn_pMic.Image = CheckON(_chPiano);
+
+            if (CheckONwMic(_chWMic1) || CheckONwMic(_chWMic2) || CheckONwMic(_chWMic3) || CheckONwMic(_chWMic4))
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_on;
+            } else
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_off;
+            }
         }
 
-        private Icon GetAppIcon(IntPtr hwnd)
+        // DC(디바이스 컨텍스트)로부터 그래픽을 가져온다
+        private Bitmap CaptrueOnOff(IntPtr hWnd)
         {
-            IntPtr iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL2, 0);
-            if (iconHandle == IntPtr.Zero)
-                iconHandle = SendMessage(hwnd, WM_GETICON, ICON_SMALL, 0);
-            if (iconHandle == IntPtr.Zero)
-                iconHandle = SendMessage(hwnd, WM_GETICON, ICON_BIG, 0);
-            if (iconHandle == IntPtr.Zero)
-                iconHandle = GetClassLongPtr(hwnd, GCL_HICON);
-            if (iconHandle == IntPtr.Zero)
-                iconHandle = GetClassLongPtr(hwnd, GCL_HICONSM);
+            ShowWindow(_mainHandle, ShowWindowEnum.ShowDefault);   // 최소화창은 캡쳐가 안되므로 일단 최소화상태를 취소한다(단, SetForegroundWindow 처럼 포커스를 주는 것은 아니다)
 
-            if (iconHandle == IntPtr.Zero)
-                return null;
+            Rectangle rectForm = Rectangle.Empty;
 
-            Icon icn = Icon.FromHandle(iconHandle);
+            // DC로부터 그래픽 정보를 얻어서 크기정보 사각형을 얻는다
+            using (Graphics g = Graphics.FromHdc(GetWindowDC(hWnd)))
+            {
+                rectForm = Rectangle.Round(g.VisibleClipBounds);
+            }
 
-            return icn;
+            // 그 크기 그대로 비트맵을 만들어서 그래픽객체로 저장, 그리고 그 객체로부터 DC의 핸들을 얻는다
+            Bitmap pImage = new Bitmap(rectForm.Width, rectForm.Height);
+            Graphics graphics = Graphics.FromImage(pImage);
+
+            IntPtr hDC = graphics.GetHdc();
+
+            try
+            {
+                // hWnd의 윈도우를 찍어서 hDC에게 넘겨줘서 저장한다
+                // nFlags : 0=include border , 1=client area only
+                PrintWindow(hWnd, hDC, (uint)1);
+            }
+            finally
+            {
+                // 저장은 끝났으므로 DC의 핸들을 해제한다
+                graphics.ReleaseHdc(hDC);
+            }
+            return pImage;
         }
 
         /// <summary>
@@ -258,6 +328,37 @@ namespace hadam_ls9helper
                     SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
                 }
             }
+            Thread.Sleep(500);
+            btn_pMic.Image = CheckON(_chPiano);
+            btn_cMic.Image = CheckON(_chSong);
+            if (CheckONwMic(_chWMic1) || CheckONwMic(_chWMic2) || CheckONwMic(_chWMic3) || CheckONwMic(_chWMic4))
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_on;
+            }
+            else
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_off;
+            }
+        }
+
+        private Bitmap CheckON(IntPtr hwnd)
+        {
+            Bitmap bmp = CaptrueOnOff(hwnd);
+            Color c = bmp.GetPixel(5, 5);
+
+            Console.WriteLine(c.GetBrightness());
+            if(c.GetBrightness() > 0)
+            {
+                return hadam_ls9helper.Properties.Resources.music_on;
+            }
+            return hadam_ls9helper.Properties.Resources.music_off;
+        }
+
+        private bool CheckONwMic(IntPtr hwnd)
+        {
+            Bitmap bmp = CaptrueOnOff(hwnd);
+            Color c = bmp.GetPixel(5, 5);
+            return (c.GetBrightness() > 0) ? true : false;
         }
 
         // 아랫강대상
@@ -265,6 +366,9 @@ namespace hadam_ls9helper
         {
             SendMessage(_chDownMain, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chDownMain, WM_LBUTTONUP, 0, 0);
+            SetforeGroundAurora();
+            Thread.Sleep(500);
+            btn_downMain.Image = CheckON(_chDownMain);
         }
 
         // 피아노
@@ -272,6 +376,7 @@ namespace hadam_ls9helper
         {
             SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
+            SetforeGroundAurora();
             Connection(PIANO);
         }
 
@@ -299,6 +404,7 @@ namespace hadam_ls9helper
                 SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
             }
             Connection(WMIC);
+            SetforeGroundAurora();
         }
 
         // 찬양대
@@ -307,6 +413,19 @@ namespace hadam_ls9helper
             SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
             Connection(SONG);
+            SetforeGroundAurora();
+        }
+
+        private void SetforeGroundAurora()
+        {
+            Process[] p = Process.GetProcessesByName(AURORA_CH);
+            if(p.GetLength(0) > 0)
+            {
+                SetForegroundWindow(p[0].MainWindowHandle);
+            } else
+            {
+                MessageBox.Show("오로라 프로그램이 없습니다");
+            }
         }
     }
 }

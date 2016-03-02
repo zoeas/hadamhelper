@@ -47,7 +47,7 @@ namespace hadam_ls9helper
             // 아래if문들의 lResult값을 모두 1을 주도록 하자.
             //
             /////////////////////////////////////////////////////////////////////////////////
-            if (vkCode == 49 && iKeyWhatHappened == 32) //ALT + 1
+            if (vkCode == 65 && iKeyWhatHappened == 32) //ALT + 1
             {
                 bAltAndNum = true;
                 bAltOrNum = false;
@@ -59,13 +59,13 @@ namespace hadam_ls9helper
                 bAltOrNum = true;
                 lResult = 0;
             }
-            else if (bAltAndNum && vkCode == 49)
+            else if (bAltAndNum && vkCode == 65)
             {
                 bAltAndNum = false;
                 bAltOrNum = true;
                 lResult = 0;
             }
-            else if (!bAltAndNum && bAltOrNum && (vkCode == 49 || vkCode == 164))
+            else if (!bAltAndNum && bAltOrNum && (vkCode == 65 || vkCode == 164))
             {
                 bAltOrNum = false;
                 lResult = 0;

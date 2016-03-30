@@ -35,6 +35,7 @@
             this.btn_downMain = new System.Windows.Forms.Button();
             this.btn_wMic = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_leader = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cBox_wMic4 = new System.Windows.Forms.CheckBox();
             this.cBox_wMic3 = new System.Windows.Forms.CheckBox();
@@ -46,7 +47,7 @@
             this.cBox_pMic = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btn_leader = new System.Windows.Forms.Button();
+            this.btn_refresh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -106,6 +107,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Lavender;
+            this.panel1.Controls.Add(this.btn_refresh);
             this.panel1.Controls.Add(this.btn_leader);
             this.panel1.Controls.Add(this.btn_wMic);
             this.panel1.Controls.Add(this.btn_pMic);
@@ -116,6 +118,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(291, 334);
             this.panel1.TabIndex = 5;
+            // 
+            // btn_leader
+            // 
+            this.btn_leader.Image = global::hadam_ls9helper.Properties.Resources.music_off;
+            this.btn_leader.Location = new System.Drawing.Point(25, 119);
+            this.btn_leader.Name = "btn_leader";
+            this.btn_leader.Size = new System.Drawing.Size(106, 86);
+            this.btn_leader.TabIndex = 5;
+            this.btn_leader.Text = "인도자\r\n\r\n";
+            this.btn_leader.UseVisualStyleBackColor = true;
+            this.btn_leader.Click += new System.EventHandler(this.btn_leader_Click);
             // 
             // groupBox1
             // 
@@ -226,16 +239,15 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btn_leader
+            // btn_refresh
             // 
-            this.btn_leader.Image = global::hadam_ls9helper.Properties.Resources.music_off;
-            this.btn_leader.Location = new System.Drawing.Point(25, 119);
-            this.btn_leader.Name = "btn_leader";
-            this.btn_leader.Size = new System.Drawing.Size(106, 86);
-            this.btn_leader.TabIndex = 5;
-            this.btn_leader.Text = "인도자\r\n\r\n";
-            this.btn_leader.UseVisualStyleBackColor = true;
-            this.btn_leader.Click += new System.EventHandler(this.btn_leader_Click);
+            this.btn_refresh.Location = new System.Drawing.Point(161, 222);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(106, 86);
+            this.btn_refresh.TabIndex = 5;
+            this.btn_refresh.Text = "새로고침";
+            this.btn_refresh.UseVisualStyleBackColor = true;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // Form1
             // 
@@ -278,6 +290,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btn_leader;
+        private System.Windows.Forms.Button btn_refresh;
     }
 }
 

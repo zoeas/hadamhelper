@@ -438,7 +438,24 @@ namespace hadam_ls9helper
             SendMessage(_chLeader, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chLeader, WM_LBUTTONUP, 0, 0);
             SetforeGroundAurora();
+            Thread.Sleep(500);                      // 이거 없으면 제대로 못가져옴
             btn_leader.Image = CheckON(_chLeader);  // on off 이미지 교체
+        }
+
+        private void btn_refresh_Click(object sender, EventArgs e)
+        {
+            btn_leader.Image = CheckON(_chLeader);
+            btn_downMain.Image = CheckON(_chDownMain);
+            btn_pMic.Image = CheckON(_chPiano);
+            btn_cMic.Image = CheckON(_chSong);
+            if (CheckONwMic(_chWMic1) || CheckONwMic(_chWMic2) || CheckONwMic(_chWMic3) || CheckONwMic(_chWMic4))
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_on;
+            }
+            else
+            {
+                btn_wMic.Image = hadam_ls9helper.Properties.Resources.music_off;
+            }
         }
     }
 }

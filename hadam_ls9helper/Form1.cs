@@ -89,6 +89,7 @@ namespace hadam_ls9helper
         private IntPtr _chWMic3;
         private IntPtr _chWMic4;
         private IntPtr _chPiano;
+        private IntPtr _chLeader;
         private IntPtr _chDownMain;
 
 
@@ -195,7 +196,11 @@ namespace hadam_ls9helper
             EnumChildWindows(_ch16, GetChOnOffHandler, IntPtr.Zero);
             _chPiano = _chOnOff;
 
-            IntPtr ch8 = ChSelector(8, _ch16);
+            IntPtr ch9 = ChSelector(7, _ch16);
+            EnumChildWindows(ch9, GetChOnOffHandler, IntPtr.Zero);
+            _chLeader = _chOnOff;
+
+            IntPtr ch8 = ChSelector(1, ch9);
             EnumChildWindows(ch8, GetChOnOffHandler, IntPtr.Zero);
             _chDownMain = _chOnOff;
 
@@ -428,5 +433,12 @@ namespace hadam_ls9helper
             }
         }
 
+        private void btn_leader_Click(object sender, EventArgs e)
+        {
+            SendMessage(_chLeader, WM_LBUTTONDOWN, 0, 0);
+            SendMessage(_chLeader, WM_LBUTTONUP, 0, 0);
+            SetforeGroundAurora();
+            btn_leader.Image = CheckON(_chLeader);  // on off 이미지 교체
+        }
     }
 }

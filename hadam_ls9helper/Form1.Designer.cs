@@ -46,6 +46,7 @@
             this.cBox_pMic = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btn_leader = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -94,7 +95,7 @@
             // btn_wMic
             // 
             this.btn_wMic.Image = global::hadam_ls9helper.Properties.Resources.music_off;
-            this.btn_wMic.Location = new System.Drawing.Point(25, 119);
+            this.btn_wMic.Location = new System.Drawing.Point(25, 222);
             this.btn_wMic.Name = "btn_wMic";
             this.btn_wMic.Size = new System.Drawing.Size(106, 86);
             this.btn_wMic.TabIndex = 4;
@@ -105,6 +106,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Lavender;
+            this.panel1.Controls.Add(this.btn_leader);
             this.panel1.Controls.Add(this.btn_wMic);
             this.panel1.Controls.Add(this.btn_pMic);
             this.panel1.Controls.Add(this.btn_downMain);
@@ -112,7 +114,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(294, 221);
+            this.panel1.Size = new System.Drawing.Size(291, 334);
             this.panel1.TabIndex = 5;
             // 
             // groupBox1
@@ -215,20 +217,31 @@
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 221);
+            this.panel2.Location = new System.Drawing.Point(0, 340);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(294, 146);
+            this.panel2.Size = new System.Drawing.Size(291, 146);
             this.panel2.TabIndex = 8;
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btn_leader
+            // 
+            this.btn_leader.Image = global::hadam_ls9helper.Properties.Resources.music_off;
+            this.btn_leader.Location = new System.Drawing.Point(25, 119);
+            this.btn_leader.Name = "btn_leader";
+            this.btn_leader.Size = new System.Drawing.Size(106, 86);
+            this.btn_leader.TabIndex = 5;
+            this.btn_leader.Text = "인도자\r\n\r\n";
+            this.btn_leader.UseVisualStyleBackColor = true;
+            this.btn_leader.Click += new System.EventHandler(this.btn_leader_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 367);
+            this.ClientSize = new System.Drawing.Size(291, 486);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -264,6 +277,7 @@
         private System.Windows.Forms.CheckBox cBox_pMic;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btn_leader;
     }
 }
 

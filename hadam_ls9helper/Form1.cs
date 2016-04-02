@@ -295,42 +295,51 @@ namespace hadam_ls9helper
         }
 
         /// <summary>
-        /// 아랫강대상외 연결가능
+        /// 아랫강대상외 버튼 클릭시 다른 버튼도 같이 클릭효과를 받을 것인지 결정
+        /// 체크리스트에서 같이 체크된 버튼끼리만 작동하도록 함
+        /// 예를들어 피아노와 코러스가 체크시 마이크를 누르면 
+        /// 피아노,코러스에는 영향이 없고 
+        /// 피아노를 누르면 코러스도 같이 눌림
         /// </summary>
         /// <param name="mic">누른 버튼의 종류(중복실행방지)</param>
-        private void Connection(int mic)
+        /// <param name="self">자신의 체크여부</param>
+        private void Connection(int mic, bool self)
         {
-            if (cBox_pMic.Checked && mic!= PIANO)
+            // 자기자신이 체크되어있을때만 다른 버튼도 실행
+            if (self)
             {
-                SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
-                SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
-            }
-            if (cBox_cMic.Checked && mic != SONG)
-            {
-                SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
-                SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
-            }
-            if (cBox_wMics.Checked && mic != WMIC)
-            {
-                if (cBox_wMic1.Checked)
+                if (cBox_pMic.Checked && mic != PIANO)
                 {
-                    SendMessage(_chWMic1, WM_LBUTTONDOWN, 0, 0);
-                    SendMessage(_chWMic1, WM_LBUTTONUP, 0, 0);
+                    SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
                 }
-                if (cBox_wMic2.Checked)
+                if (cBox_cMic.Checked && mic != SONG)
                 {
-                    SendMessage(_chWMic2, WM_LBUTTONDOWN, 0, 0);
-                    SendMessage(_chWMic2, WM_LBUTTONUP, 0, 0);
+                    SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
+                    SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
                 }
-                if (cBox_wMic3.Checked)
+                if (cBox_wMics.Checked && mic != WMIC)
                 {
-                    SendMessage(_chWMic3, WM_LBUTTONDOWN, 0, 0);
-                    SendMessage(_chWMic3, WM_LBUTTONUP, 0, 0);
-                }
-                if (cBox_wMic4.Checked)
-                {
-                    SendMessage(_chWMic4, WM_LBUTTONDOWN, 0, 0);
-                    SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
+                    if (cBox_wMic1.Checked)
+                    {
+                        SendMessage(_chWMic1, WM_LBUTTONDOWN, 0, 0);
+                        SendMessage(_chWMic1, WM_LBUTTONUP, 0, 0);
+                    }
+                    if (cBox_wMic2.Checked)
+                    {
+                        SendMessage(_chWMic2, WM_LBUTTONDOWN, 0, 0);
+                        SendMessage(_chWMic2, WM_LBUTTONUP, 0, 0);
+                    }
+                    if (cBox_wMic3.Checked)
+                    {
+                        SendMessage(_chWMic3, WM_LBUTTONDOWN, 0, 0);
+                        SendMessage(_chWMic3, WM_LBUTTONUP, 0, 0);
+                    }
+                    if (cBox_wMic4.Checked)
+                    {
+                        SendMessage(_chWMic4, WM_LBUTTONDOWN, 0, 0);
+                        SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
+                    }
                 }
             }
             Thread.Sleep(500);
@@ -382,7 +391,7 @@ namespace hadam_ls9helper
             SendMessage(_chPiano, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chPiano, WM_LBUTTONUP, 0, 0);
             SetforeGroundAurora();
-            Connection(PIANO);
+            Connection(PIANO, cBox_pMic.Checked);
         }
 
         // 무선
@@ -408,7 +417,7 @@ namespace hadam_ls9helper
                 SendMessage(_chWMic4, WM_LBUTTONDOWN, 0, 0);
                 SendMessage(_chWMic4, WM_LBUTTONUP, 0, 0);
             }
-            Connection(WMIC);
+            Connection(WMIC, cBox_wMics.Checked);
             SetforeGroundAurora();
         }
 
@@ -417,7 +426,7 @@ namespace hadam_ls9helper
         {
             SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
-            Connection(SONG);
+            Connection(SONG, cBox_cMic.Checked);
             SetforeGroundAurora();
         }
 

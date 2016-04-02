@@ -35,6 +35,7 @@
             this.btn_downMain = new System.Windows.Forms.Button();
             this.btn_wMic = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_refresh = new System.Windows.Forms.Button();
             this.btn_leader = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cBox_wMic4 = new System.Windows.Forms.CheckBox();
@@ -47,7 +48,6 @@
             this.cBox_pMic = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btn_refresh = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -78,7 +78,7 @@
             // 
             // btn_downMain
             // 
-            this.btn_downMain.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_downMain.BackColor = System.Drawing.SystemColors.ControlLight;
             this.btn_downMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btn_downMain.FlatAppearance.BorderColor = System.Drawing.Color.Blue;
             this.btn_downMain.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -90,7 +90,7 @@
             this.btn_downMain.TabIndex = 3;
             this.btn_downMain.Text = "아랫강대상\r\n\r\n";
             this.btn_downMain.UseMnemonic = false;
-            this.btn_downMain.UseVisualStyleBackColor = true;
+            this.btn_downMain.UseVisualStyleBackColor = false;
             this.btn_downMain.Click += new System.EventHandler(this.btn_downMain_Click);
             // 
             // btn_wMic
@@ -118,6 +118,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(291, 334);
             this.panel1.TabIndex = 5;
+            // 
+            // btn_refresh
+            // 
+            this.btn_refresh.Location = new System.Drawing.Point(161, 222);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(106, 86);
+            this.btn_refresh.TabIndex = 5;
+            this.btn_refresh.Text = "새로고침";
+            this.btn_refresh.UseVisualStyleBackColor = true;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // btn_leader
             // 
@@ -238,16 +248,6 @@
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // btn_refresh
-            // 
-            this.btn_refresh.Location = new System.Drawing.Point(161, 222);
-            this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(106, 86);
-            this.btn_refresh.TabIndex = 5;
-            this.btn_refresh.Text = "새로고침";
-            this.btn_refresh.UseVisualStyleBackColor = true;
-            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // Form1
             // 

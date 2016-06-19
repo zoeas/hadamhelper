@@ -29,7 +29,7 @@ namespace hadam_ls9helper
 
         // 후킹된 모듈의 핸들. 후킹이 성공했는지 여부를 식별하기 위해서 사용
         private const int WH_KEYBOARD_LL = 13;		// Intalls a hook procedure that monitors low-level keyboard input events.
-        private static long m_hDllKbdHook;
+        private static int m_hDllKbdHook;
         private static KBDLLHOOKSTRUCT m_KbDllHs = new KBDLLHOOKSTRUCT();
         private static IntPtr m_LastWindowHWnd;
         public static IntPtr m_CurrentWindowHWnd;
@@ -137,7 +137,7 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"kernel32.dll", CharSet = CharSet.Auto)]
+        [DllImport(@"kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
         private static extern void CopyMemory(ref KBDLLHOOKSTRUCT pDest, IntPtr pSource, long cb);
 
         #region GetForegroundWindow Documentation
@@ -157,7 +157,7 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"user32.dll", CharSet = CharSet.Auto)]
+        [DllImport(@"user32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
         private static extern IntPtr GetForegroundWindow();
 
         #region GetAsyncKeyState
@@ -179,7 +179,7 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"user32.dll", CharSet = CharSet.Auto)]
+        [DllImport(@"user32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
         private static extern uint GetAsyncKeyState(int vKey);
 
         #region CallNextHookEx Documentation
@@ -204,8 +204,8 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"user32.dll", CharSet = CharSet.Auto)]
-        private static extern long CallNextHookEx(long hHook, long nCode, long wParam, IntPtr lParam);
+        [DllImport(@"user32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        private static extern long CallNextHookEx(int hHook, long nCode, long wParam, IntPtr lParam);
 
         #region SetWindowsHookEx Documentation
         /// <summary>
@@ -231,8 +231,12 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"user32.dll", CharSet = CharSet.Auto)]
-        private static extern long SetWindowsHookEx(int idHook, HookedKeyboardEventHandler lpfn, long hmod, int dwThreadId);
+        [DllImport(@"user32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        private static extern int SetWindowsHookEx(int idHook, HookedKeyboardEventHandler lpfn, int hmod, int dwThreadId);
+
+        
+        //[DllImport("user32.dll", SetLastError = true)]
+        //static extern IntPtr SetWindowsHookEx(int hookType, UIntPtr lpfn,IntPtr hMod, ulong dwThreadId);
 
         #region UnhookWindowsEx Documentation
         /// <summary>
@@ -252,8 +256,8 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"user32.dll", CharSet = CharSet.Auto)]
-        private static extern long UnhookWindowsHookEx(long hHook);
+        [DllImport(@"user32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        private static extern long UnhookWindowsHookEx(int hHook);
 
 
         // Valid return for nCode parameter of LowLevelKeyboardProc

@@ -48,6 +48,7 @@
             this.cBox_pMic = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -116,7 +117,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(291, 334);
+            this.panel1.Size = new System.Drawing.Size(293, 334);
             this.panel1.TabIndex = 5;
             // 
             // btn_refresh
@@ -242,18 +243,22 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(0, 340);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(291, 146);
+            this.panel2.Size = new System.Drawing.Size(293, 146);
             this.panel2.TabIndex = 8;
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 486);
+            this.ClientSize = new System.Drawing.Size(293, 486);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -291,6 +296,7 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btn_leader;
         private System.Windows.Forms.Button btn_refresh;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

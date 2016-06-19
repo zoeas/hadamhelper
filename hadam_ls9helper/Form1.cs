@@ -78,6 +78,10 @@ namespace hadam_ls9helper
         [DllImport("user32.dll", EntryPoint = "GetClassLongPtr")]
         public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
 
+        private const int SW_RESTORE = 9;
+        [DllImport("user32.dll")]
+        private static extern int ShowWindow(IntPtr hwnd, int nCmdShow);
+
         private delegate bool EnumWindowProc(IntPtr childHandle, IntPtr pointer);
         private IntPtr _mainHandle;
         private IntPtr _ch32;
@@ -435,6 +439,7 @@ namespace hadam_ls9helper
             Process[] p = Process.GetProcessesByName(AURORA_CH);
             if(p.GetLength(0) > 0)
             {
+                //ShowWindow(p[0].MainWindowHandle, SW_RESTORE);   // 최소화 윈도우 복구
                 SetForegroundWindow(p[0].MainWindowHandle);
             } else
             {

@@ -105,7 +105,7 @@ namespace hadam_ls9helper
                     bAltAndB = false;
                     bAltOrB = false;
                     lResult = 0;
-                    timer1.Interval = 50;
+                    timer1.Interval = 1;
                     timer1.Start();
                 }
                 else if (bAltAndB || bAltOrB)
@@ -115,7 +115,7 @@ namespace hadam_ls9helper
                     bAltAndB = false;
                     bAltOrB = false;
                     lResult = 0;
-                    timer2.Interval = 50;
+                    timer2.Interval = 1;
                     timer2.Start();
                 }
             }

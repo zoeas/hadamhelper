@@ -472,5 +472,16 @@ namespace hadam_ls9helper
             }
         }
 
+        /// <summary>
+        /// 다른체크에 관계없이 찬양대만 온 시킨다
+        /// </summary>
+        private void btn_cOnly_Click(object sender, EventArgs e)
+        {
+            SendMessage(_chSong, WM_LBUTTONDOWN, 0, 0);
+            SendMessage(_chSong, WM_LBUTTONUP, 0, 0);
+            SetforeGroundAurora();
+            Thread.Sleep(500);
+            btn_cOnly.Image = CheckON(_chSong);
+        }
     }
 }

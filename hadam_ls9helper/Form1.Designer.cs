@@ -49,6 +49,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.timer3 = new System.Windows.Forms.Timer(this.components);
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.btn_cOnly = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -108,6 +111,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Lavender;
+            this.panel1.Controls.Add(this.btn_cOnly);
             this.panel1.Controls.Add(this.btn_refresh);
             this.panel1.Controls.Add(this.btn_leader);
             this.panel1.Controls.Add(this.btn_wMic);
@@ -117,14 +121,14 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(293, 334);
+            this.panel1.Size = new System.Drawing.Size(293, 356);
             this.panel1.TabIndex = 5;
             // 
             // btn_refresh
             // 
-            this.btn_refresh.Location = new System.Drawing.Point(161, 222);
+            this.btn_refresh.Location = new System.Drawing.Point(161, 311);
             this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(106, 86);
+            this.btn_refresh.Size = new System.Drawing.Size(106, 40);
             this.btn_refresh.TabIndex = 5;
             this.btn_refresh.Text = "새로고침";
             this.btn_refresh.UseVisualStyleBackColor = true;
@@ -241,7 +245,7 @@
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 340);
+            this.panel2.Location = new System.Drawing.Point(0, 362);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(293, 146);
             this.panel2.TabIndex = 8;
@@ -254,11 +258,30 @@
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // timer3
+            // 
+            this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
+            // 
+            // timer4
+            // 
+            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
+            // 
+            // btn_cOnly
+            // 
+            this.btn_cOnly.Image = global::hadam_ls9helper.Properties.Resources.music_off;
+            this.btn_cOnly.Location = new System.Drawing.Point(161, 222);
+            this.btn_cOnly.Name = "btn_cOnly";
+            this.btn_cOnly.Size = new System.Drawing.Size(106, 86);
+            this.btn_cOnly.TabIndex = 6;
+            this.btn_cOnly.Text = "찬양대 Only\r\n\r\n";
+            this.btn_cOnly.UseVisualStyleBackColor = true;
+            this.btn_cOnly.Click += new System.EventHandler(this.btn_cOnly_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 486);
+            this.ClientSize = new System.Drawing.Size(293, 508);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -297,6 +320,9 @@
         private System.Windows.Forms.Button btn_leader;
         private System.Windows.Forms.Button btn_refresh;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Timer timer3;
+        private System.Windows.Forms.Timer timer4;
+        private System.Windows.Forms.Button btn_cOnly;
     }
 }
 

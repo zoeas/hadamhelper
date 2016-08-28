@@ -23,6 +23,8 @@ namespace hadam_ls9helper
         private bool bAltOrA;//Alt+A 이후 Alt만 남거나 A키만 남거나 한 상태, 즉 키 한개만 눌려진 상태
         private bool bAltAndB;//Alt+B 가 같이 눌린 상태
         private bool bAltOrB;//Alt+B 이후 Alt만 남거나 B키만 남거나 한 상태, 즉 키 한개만 눌려진 상태
+        private bool bAltC;
+        private bool bAltE;
 
 
         //1. 후킹할 이벤트를 등록한다.
@@ -65,6 +67,8 @@ namespace hadam_ls9helper
                     bAltOrA = false;
                     bAltAndB = false;
                     bAltOrB = false;
+                    bAltC = false;
+                    bAltE = false;
                     lResult = 0;
                 } else if(vkCode == 66) // Alt + B
                 {
@@ -72,11 +76,31 @@ namespace hadam_ls9helper
                     bAltOrB = false;
                     bAltAndA = false;
                     bAltOrA = false;
+                    bAltC = false;
+                    bAltE = false;
                     lResult = 0;
+                } else if(vkCode == 67) // Alt + C
+                {
+                    bAltC = true;
+                    bAltE = false;
+                    bAltAndA = false;
+                    bAltOrA = false;
+                    bAltAndB = false;
+                    bAltOrB = false;
+
+                } else if(vkCode == 69) // Alt + E
+                {
+                    bAltC = false;
+                    bAltE = true;
+                    bAltAndA = false;
+                    bAltOrA = false;
+                    bAltAndB = false;
+                    bAltOrB = false;
                 }
                 
             }
             else if (iKeyWhatHappened == 160) // 이번엔 Alt는 눌러져있고 다른 버튼이 떨어진 상태
+                                              // 정확히 구분엔 필요한데 사실 현재는 필요없음
             {
                 if(bAltAndA) // 그 떨어진 버튼이 A
                 {
@@ -94,7 +118,6 @@ namespace hadam_ls9helper
                     bAltOrB = true;
                     lResult = 0;
                 }
-                
             }
             else if (iKeyWhatHappened == 128) // Alt가 떼어졌으므로 발동(단 이전에 동시에 키가 눌려졌을 경우만)
             {
@@ -117,6 +140,20 @@ namespace hadam_ls9helper
                     lResult = 0;
                     timer2.Interval = 1;
                     timer2.Start();
+                }
+                else if (bAltC)
+                {
+                    bAltC = bAltE = bAltAndA = bAltOrA = bAltAndB = bAltOrB = false;
+                    lResult = 0;
+                    timer3.Interval = 1;
+                    timer3.Start();
+                }
+                else if (bAltE)
+                {
+                    bAltC = bAltE = bAltAndA = bAltOrA = bAltAndB = bAltOrB = false;
+                    lResult = 0;
+                    timer4.Interval = 1;
+                    timer4.Start();
                 }
             }
             else
@@ -178,6 +215,18 @@ namespace hadam_ls9helper
             SetforeGroundAurora();
             Thread.Sleep(30);
             SendKeys.Send(" ");
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            timer3.Stop();
+            btn_cOnly_Click(null, null);
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            timer4.Stop();
+            btn_downMain_Click(null, null);
         }
 
     }

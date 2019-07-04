@@ -483,5 +483,6 @@ namespace hadam_ls9helper
             Thread.Sleep(500);
             btn_cOnly.Image = CheckON(_chSong);
         }
+
     }
 }

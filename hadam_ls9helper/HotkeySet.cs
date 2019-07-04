@@ -25,6 +25,7 @@ namespace hadam_ls9helper
         private bool bAltOrB;//Alt+B 이후 Alt만 남거나 B키만 남거나 한 상태, 즉 키 한개만 눌려진 상태
         private bool bAltC;
         private bool bAltE;
+        private bool bAltF;
 
 
         //1. 후킹할 이벤트를 등록한다.
@@ -69,6 +70,7 @@ namespace hadam_ls9helper
                     bAltOrB = false;
                     bAltC = false;
                     bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                 } else if(vkCode == 66) // Alt + B
                 {
@@ -78,11 +80,13 @@ namespace hadam_ls9helper
                     bAltOrA = false;
                     bAltC = false;
                     bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                 } else if(vkCode == 67) // Alt + C
                 {
                     bAltC = true;
                     bAltE = false;
+                    bAltF = false;
                     bAltAndA = false;
                     bAltOrA = false;
                     bAltAndB = false;
@@ -92,6 +96,16 @@ namespace hadam_ls9helper
                 {
                     bAltC = false;
                     bAltE = true;
+                    bAltF = false;
+                    bAltAndA = false;
+                    bAltOrA = false;
+                    bAltAndB = false;
+                    bAltOrB = false;
+                } else if(vkCode == 70) // Alt + F
+                {
+                    bAltC = false;
+                    bAltE = false;
+                    bAltF = true;
                     bAltAndA = false;
                     bAltOrA = false;
                     bAltAndB = false;
@@ -127,6 +141,9 @@ namespace hadam_ls9helper
                     bAltOrA = false;
                     bAltAndB = false;
                     bAltOrB = false;
+                    bAltC = false;
+                    bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                     timer1.Interval = 1;
                     timer1.Start();
@@ -137,20 +154,35 @@ namespace hadam_ls9helper
                     bAltOrA = false;
                     bAltAndB = false;
                     bAltOrB = false;
+                    bAltC = false;
+                    bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                     timer2.Interval = 1;
                     timer2.Start();
                 }
                 else if (bAltC)
                 {
-                    bAltC = bAltE = bAltAndA = bAltOrA = bAltAndB = bAltOrB = false;
+                    bAltAndA = false;
+                    bAltOrA = false;
+                    bAltAndB = false;
+                    bAltOrB = false;
+                    bAltC = false;
+                    bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                     timer3.Interval = 1;
                     timer3.Start();
                 }
                 else if (bAltE)
                 {
-                    bAltC = bAltE = bAltAndA = bAltOrA = bAltAndB = bAltOrB = false;
+                    bAltAndA = false;
+                    bAltOrA = false;
+                    bAltAndB = false;
+                    bAltOrB = false;
+                    bAltC = false;
+                    bAltE = false;
+                    bAltF = false;
                     lResult = 0;
                     timer4.Interval = 1;
                     timer4.Start();
@@ -163,6 +195,9 @@ namespace hadam_ls9helper
                 bAltOrA = false;
                 bAltAndB = false;
                 bAltOrB = false;
+                bAltC = false;
+                bAltE = false;
+                bAltF = false;
                 lResult = 0;
             }
 
@@ -227,6 +262,12 @@ namespace hadam_ls9helper
         {
             timer4.Stop();
             btn_downMain_Click(null, null);
+        }
+
+        private void timer5_Tick(object sender, EventArgs e)
+        {
+            timer5.Stop();
+
         }
 
     }

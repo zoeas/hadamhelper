@@ -35,6 +35,7 @@
             this.btn_downMain = new System.Windows.Forms.Button();
             this.btn_wMic = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_cOnly = new System.Windows.Forms.Button();
             this.btn_refresh = new System.Windows.Forms.Button();
             this.btn_leader = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -51,7 +52,7 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.timer4 = new System.Windows.Forms.Timer(this.components);
-            this.btn_cOnly = new System.Windows.Forms.Button();
+            this.timer5 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -123,6 +124,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(293, 356);
             this.panel1.TabIndex = 5;
+            // 
+            // btn_cOnly
+            // 
+            this.btn_cOnly.Image = global::hadam_ls9helper.Properties.Resources.music_off;
+            this.btn_cOnly.Location = new System.Drawing.Point(161, 222);
+            this.btn_cOnly.Name = "btn_cOnly";
+            this.btn_cOnly.Size = new System.Drawing.Size(106, 86);
+            this.btn_cOnly.TabIndex = 6;
+            this.btn_cOnly.Text = "찬양대 Only\r\n\r\n";
+            this.btn_cOnly.UseVisualStyleBackColor = true;
+            this.btn_cOnly.Click += new System.EventHandler(this.btn_cOnly_Click);
             // 
             // btn_refresh
             // 
@@ -266,16 +278,9 @@
             // 
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
-            // btn_cOnly
+            // timer5
             // 
-            this.btn_cOnly.Image = global::hadam_ls9helper.Properties.Resources.music_off;
-            this.btn_cOnly.Location = new System.Drawing.Point(161, 222);
-            this.btn_cOnly.Name = "btn_cOnly";
-            this.btn_cOnly.Size = new System.Drawing.Size(106, 86);
-            this.btn_cOnly.TabIndex = 6;
-            this.btn_cOnly.Text = "찬양대 Only\r\n\r\n";
-            this.btn_cOnly.UseVisualStyleBackColor = true;
-            this.btn_cOnly.Click += new System.EventHandler(this.btn_cOnly_Click);
+            this.timer5.Tick += new System.EventHandler(this.timer5_Tick);
             // 
             // Form1
             // 
@@ -323,6 +328,7 @@
         private System.Windows.Forms.Timer timer3;
         private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.Button btn_cOnly;
+        private System.Windows.Forms.Timer timer5;
     }
 }
 

@@ -219,6 +219,7 @@ namespace hadam_ls9helper
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             KeyboardHooker.UnHook();
+            Properties.Settings.Default.SettingsSaving -= Default_SettingsSaving;
         }
 
         /// <summary>
@@ -244,12 +245,11 @@ namespace hadam_ls9helper
             btn_cMic_Click(null, null); // 단축키 Alt+A 이 들어오면 찬양대 마이크 버튼 눌려짐
         }
 
+        // 자막기에 키패드 엔터를 postmessage로 다이렉트로 보내기(포커스 필요없이)
         private void timer2_Tick(object sender, EventArgs e)
         {
             timer2.Stop();
-            SetforeGroundAurora();
-            Thread.Sleep(30);
-            SendKeys.Send(" ");
+            targetProgramPostMessage();
         }
 
         private void timer3_Tick(object sender, EventArgs e)

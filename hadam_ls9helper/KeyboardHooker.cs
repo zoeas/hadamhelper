@@ -137,7 +137,7 @@ namespace hadam_ls9helper
         /// </para>
         /// </remarks>
         #endregion
-        [DllImport(@"kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(@"kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, CallingConvention = CallingConvention.Cdecl)]
         private static extern void CopyMemory(ref KBDLLHOOKSTRUCT pDest, IntPtr pSource, long cb);
 
         #region GetForegroundWindow Documentation

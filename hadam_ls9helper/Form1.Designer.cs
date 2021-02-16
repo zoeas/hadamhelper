@@ -35,6 +35,9 @@
             this.btn_downMain = new System.Windows.Forms.Button();
             this.btn_wMic = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label2_targetProgram = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btn_setting = new System.Windows.Forms.Button();
             this.btn_cOnly = new System.Windows.Forms.Button();
             this.btn_refresh = new System.Windows.Forms.Button();
             this.btn_leader = new System.Windows.Forms.Button();
@@ -77,7 +80,8 @@
             this.btn_cMic.Name = "btn_cMic";
             this.btn_cMic.Size = new System.Drawing.Size(106, 86);
             this.btn_cMic.TabIndex = 1;
-            this.btn_cMic.Text = "찬양대\r\n\r\n";
+            this.btn_cMic.Text = "\r\n찬양대\r\nALT+A\r\n";
+            this.btn_cMic.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btn_cMic.UseVisualStyleBackColor = true;
             this.btn_cMic.Click += new System.EventHandler(this.btn_cMic_Click);
             // 
@@ -93,7 +97,8 @@
             this.btn_downMain.Name = "btn_downMain";
             this.btn_downMain.Size = new System.Drawing.Size(106, 86);
             this.btn_downMain.TabIndex = 3;
-            this.btn_downMain.Text = "아랫강대상\r\n\r\n";
+            this.btn_downMain.Text = "\r\n아랫강대상\r\nALT+E\r\n\r\n";
+            this.btn_downMain.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btn_downMain.UseMnemonic = false;
             this.btn_downMain.UseVisualStyleBackColor = false;
             this.btn_downMain.Click += new System.EventHandler(this.btn_downMain_Click);
@@ -112,6 +117,9 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Lavender;
+            this.panel1.Controls.Add(this.label2_targetProgram);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.btn_setting);
             this.panel1.Controls.Add(this.btn_cOnly);
             this.panel1.Controls.Add(this.btn_refresh);
             this.panel1.Controls.Add(this.btn_leader);
@@ -122,8 +130,37 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(293, 356);
+            this.panel1.Size = new System.Drawing.Size(518, 356);
             this.panel1.TabIndex = 5;
+            // 
+            // label2_targetProgram
+            // 
+            this.label2_targetProgram.AutoSize = true;
+            this.label2_targetProgram.Font = new System.Drawing.Font("뫼비우스 Bold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2_targetProgram.Location = new System.Drawing.Point(328, 54);
+            this.label2_targetProgram.Name = "label2_targetProgram";
+            this.label2_targetProgram.Size = new System.Drawing.Size(72, 22);
+            this.label2_targetProgram.TabIndex = 9;
+            this.label2_targetProgram.Text = "label2";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(328, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(117, 12);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "자막기프로그램 이름";
+            // 
+            // btn_setting
+            // 
+            this.btn_setting.Location = new System.Drawing.Point(32, 314);
+            this.btn_setting.Name = "btn_setting";
+            this.btn_setting.Size = new System.Drawing.Size(99, 37);
+            this.btn_setting.TabIndex = 7;
+            this.btn_setting.Text = "설정";
+            this.btn_setting.UseVisualStyleBackColor = true;
+            this.btn_setting.Click += new System.EventHandler(this.btn_setting_Click);
             // 
             // btn_cOnly
             // 
@@ -132,7 +169,8 @@
             this.btn_cOnly.Name = "btn_cOnly";
             this.btn_cOnly.Size = new System.Drawing.Size(106, 86);
             this.btn_cOnly.TabIndex = 6;
-            this.btn_cOnly.Text = "찬양대 Only\r\n\r\n";
+            this.btn_cOnly.Text = "\r\n찬양대 Only\r\nALT+C\r\n\r\n";
+            this.btn_cOnly.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btn_cOnly.UseVisualStyleBackColor = true;
             this.btn_cOnly.Click += new System.EventHandler(this.btn_cOnly_Click);
             // 
@@ -257,9 +295,9 @@
             this.panel2.Controls.Add(this.groupBox1);
             this.panel2.Controls.Add(this.groupBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 362);
+            this.panel2.Location = new System.Drawing.Point(0, 377);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(293, 146);
+            this.panel2.Size = new System.Drawing.Size(518, 146);
             this.panel2.TabIndex = 8;
             // 
             // timer1
@@ -286,7 +324,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 508);
+            this.ClientSize = new System.Drawing.Size(518, 523);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -295,6 +333,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -329,6 +368,9 @@
         private System.Windows.Forms.Timer timer4;
         private System.Windows.Forms.Button btn_cOnly;
         private System.Windows.Forms.Timer timer5;
+        private System.Windows.Forms.Button btn_setting;
+        private System.Windows.Forms.Label label2_targetProgram;
+        private System.Windows.Forms.Label label1;
     }
 }
 

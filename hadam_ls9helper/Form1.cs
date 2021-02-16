@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using AutoHotkey.Interop;
 
 namespace hadam_ls9helper
 {
@@ -18,8 +19,9 @@ namespace hadam_ls9helper
         private const int SONG = 1;
         private const int PIANO = 2;
         private const int WMIC = 3;
-        private const string AURORA_CH = "aurora4stardb";
+        private string _targetProgramName = "NABI";
         private const string AURORA_HOME = "aurora4staredit";
+        private AutoHotkeyEngine _ahk = AutoHotkeyEngine.Instance;
 
         private enum ShowWindowEnum { Hide = 0, ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3, Maximize = 3, ShowNormalNoActivate = 4, Show = 5, Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8, Restore = 9, ShowDefault = 10, ForceMinimized = 11 };
 
@@ -64,6 +66,7 @@ namespace hadam_ls9helper
         private static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
         const int WM_LBUTTONDOWN = 0x0201;
         const int WM_LBUTTONUP = 0x0202;
+
         const int BM_CLICK = 0x00F5;
         const int GCL_HICONSM = -34;
         const int GCL_HICON = -14;
@@ -95,6 +98,8 @@ namespace hadam_ls9helper
         private IntPtr _chPiano;
         private IntPtr _chLeader;
         private IntPtr _chDownMain;
+
+        private IntPtr _targetProgramHandle;
 
 
         /// <summary>
@@ -147,14 +152,30 @@ namespace hadam_ls9helper
         public Form1()
         {
             InitializeComponent();
+            LoadSettings();
+            Properties.Settings.Default.SettingsSaving += Default_SettingsSaving;   // 세팅 저장시 호출되는 이벤트를 등록, 프로그램 종료시 해제해줘야함
             FindChSetHnd();
             FindChHnd();
             InitButton();
         }
 
+        private void LoadSettings()
+        {
+            _targetProgramName = Properties.Settings.Default.TargetProgramName;
+            label2_targetProgram.Text = _targetProgramName;
+        }
+
+        // save시 반응하는 이벤트, gui 갱신할때 쓰임
+        private void Default_SettingsSaving(object sender, CancelEventArgs e)
+        {
+            LoadSettings();
+            //throw new NotImplementedException();
+        }
+
+
         private void FindChSetHnd()
         {
-            _mainHandle = FindWindow(null, "LS9 2");  // 최상위 핸들 찾고
+            _mainHandle = FindWindow(null, "LS9");  // 최상위 핸들 찾고 (창제목)
 
             if (_mainHandle != null)
             {
@@ -436,24 +457,27 @@ namespace hadam_ls9helper
 
         private void SetforeGroundAurora()
         {
-            Process[] p = Process.GetProcessesByName(AURORA_CH);
+            Process[] p = Process.GetProcessesByName(_targetProgramName);
             if(p.GetLength(0) > 0)
             {
                 //ShowWindow(p[0].MainWindowHandle, SW_RESTORE);   // 최소화 윈도우 복구
                 SetForegroundWindow(p[0].MainWindowHandle);
+
             } else
             {
-                MessageBox.Show("오로라 프로그램이 없습니다");
+                MessageBox.Show("NABI 자막기 프로그램찾기를 실패했습니다");
             }
         }
 
         private void btn_leader_Click(object sender, EventArgs e)
         {
+
             SendMessage(_chLeader, WM_LBUTTONDOWN, 0, 0);
             SendMessage(_chLeader, WM_LBUTTONUP, 0, 0);
             SetforeGroundAurora();
             Thread.Sleep(500);                      // 이거 없으면 제대로 못가져옴
             btn_leader.Image = CheckON(_chLeader);  // on off 이미지 교체
+
         }
 
         private void btn_refresh_Click(object sender, EventArgs e)
@@ -484,5 +508,56 @@ namespace hadam_ls9helper
             btn_cOnly.Image = CheckON(_chSong);
         }
 
+        private void btn_setting_Click(object sender, EventArgs e)
+        {
+            Form2 dialog = new Form2();
+            dialog.ShowDialog();
+        }
+
+        [DllImport("user32.dll", EntryPoint = "PostMessageA", SetLastError = true)]
+        private static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
+
+        const uint WM_KEYDOWN = 0x0100;
+        const uint WM_KEYUP = 0x0101;
+        const int VK_F2 = 0x71;
+        const int VK_I = 0x49;
+        const int VK_F11 = 0x7A;
+        const int VK_RETURN = 0x0D;
+        const int VK_NUMPAD1 = 0x61;
+       
+        //const int VK_RETURN = 0x2B;
+
+        private void targetProgramPostMessage()
+        {
+            //IntPtr hdr = FindWindow(null, "Compix Presentation, Ltd. NABI HD");  // 핸들 찾고 (창제목)
+
+            SetforeGroundAurora();
+            Thread.Sleep(100);
+            _ahk.ExecRaw("Send, {NumpadEnter}");
+
+            /*
+             * postmessage 로 numpad 보내는게 전혀 안먹힘 제길
+             * 
+            IntPtr hdr = IntPtr.Zero;
+            Process[] p = Process.GetProcessesByName(_targetProgramName);
+            if (p.GetLength(0) > 0)
+            {
+                hdr = p[0].MainWindowHandle;
+            }
+
+
+            if (hdr != null)
+            {
+                bool keyDown = true;
+                int lParam = 1 << 24; // this specifies NumPad key (extended key)
+                lParam |= (keyDown) ? 0 : (1 << 30 | 1 << 31); // mark key as pressed if we use keyup message
+
+                PostMessage(hdr, (keyDown) ? WM_KEYDOWN : WM_KEYUP, VK_RETURN, lParam); // send enter
+
+                
+                
+                Console.WriteLine(lParam);
+            }*/
+        }
     }
 }
